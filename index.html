@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content = "Sirin Odrowski">
+    <title>Find happy places on Earth</title>
+    <link href="bootstrap-3.3.2/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="bootstrap-3.3.2/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
+    <link href="http://fonts.googleapis.com/css?family=Arimo" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css">
+    <link href="bootstrap-slider/css/bootstrap-slider.css" rel="stylesheet" type="text/css">
+    <link href="style.css" rel="stylesheet" type="text/css">
+  </head>
+  <body role="document">  
+    <!--- Load external scripts -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="bootstrap-3.3.2/js/bootstrap.min.js"></script>
+    <script src="bootstrap-slider/js/bootstrap-slider.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/queue.v1.min.js"></script>
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
+ 
+    <div class="container">
+	<div class="jumbotron">   
+        <h1 style="color:#123954;">Imagine you were free to choose ..</h1>
+	<p>How do you want your kids, or the kids you may have someday, to grow up? What are the essentials for a happy life, and where would you be able to find them?</p>
+	<p>Most of us are not able to decide freely where to raise our children. Imagine for one moment however, that you were. Which country would provide the best conditions for your (prospective) children? Use the sliders below to define your priorities!</p>
+    </div>
+    </div>
+    <div class="container">
+      <div class="page-header">
+	<h1>Make your choices! <small style="color:#AB9739;">Use the sliders to choose what matters to you</small></h1>
+      </div>
+      <div class="row">
+	<div id="userinputfield" class="col-lg-6 col-md-6 col-sm-12">
+	  <h3>Expected lifetime [years]</h3>
+	  <p>&nbsp;</p>
+	  <input id="ex1" data-slider-id="ex1Slider" type="text" data-slider-min="30" data-slider-max="90" data-slider-step="1" data-slider-value="30" style="width:100%"/>
+	  <div class="panel panel-primary" style="margin-top:20px;">	  
+	    <div class="panel-heading">
+	      <h4 class="panel-title">Read more
+	      <span class="pull-right clickable"><i class="glyphicon glyphicon-minus"></i></span>
+	      </h4>
+	    </div>
+	    <div class="panel-body">
+	      This is the expected lifetime of a child under the assumption that age-dependent mortality rates measured in 2014 can be extrapolated into the future as a constant. Future changes in living conditions and health standards may change these values. A child's life expectancy an also be impacted by its gender and social status. Average values are used here. 
+	    </div>
+	  </div>
+	</div>
+	<div class="clearfix visible-sm-block"></div>
+	<div id="userinputfield2" class="col-lg-6 col-md-6 col-sm-12">
+	  <h3>Expected duration of education [years]</h3>
+	  <p>&nbsp;</p>
+	  <input id="dSchool" data-slider-id="dSchoolSlider" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="0" style="width:100%;"/>
+	  <div class="panel panel-primary" style="margin-top:20px;">	  
+	    <div class="panel-heading">
+	      <h4 class="panel-title">Read more
+	      <span class="pull-right clickable"><i class="glyphicon glyphicon-minus"></i></span>
+	      </h4>
+	    </div>
+	    <div class="panel-body">
+	      Average number of years of schooling that a child of school entrance age can expect to receive if age-specific enrollment rates measured in 2014 persist.
+	    </div>
+	  </div>
+        </div>
+      </div>
+      <div class="row">
+	<div class="col-lg-6 col-md-6 col-sm-12">
+	  <h3>Probability to receive secondary education, female [percent of female population]</h3>
+	  <p>&nbsp;</p>
+	  <input id="mommy" data-slider-id="mommyslider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="0.1" data-slider-value="0" style="width:100%"/>
+        	  <div class="panel panel-primary" style="margin-top:20px;">	  
+	    <div class="panel-heading">
+	      <h4 class="panel-title">Read more
+	      <span class="pull-right clickable"><i class="glyphicon glyphicon-minus"></i></span>
+	      </h4>
+	    </div>
+	    <div class="panel-body">
+	      This (pessimistic) estimate is based on the percentage of females aged 25 above that have received some secondary education. 
+	    </div>
+	  </div>
+	</div>
+	<div class="clearfix visible-sm-block"></div>
+	<div class="col-lg-6 col-md-6 col-sm-12">
+	  <h3>Probability to receive a pension at old age [percent of population aged 65 or older]</h3>
+	  <p>&nbsp;</p>
+	  <input id="disaster" data-slider-id="disasterslider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="0.1" data-slider-value="0" style="width:100%;"/>
+	  <div class="panel panel-primary" style="margin-top:20px;">	  
+	    <div class="panel-heading">
+	      <h4 class="panel-title">Read more
+	      <span class="pull-right clickable"><i class="glyphicon glyphicon-minus"></i></span>
+	      </h4>
+	    </div>
+	    <div class="panel-body">
+	      Estimated from the percentage of population aged 65 or older that receive a pension in 2014.
+	    </div>
+	  </div>
+	</div>
+        </div>
+      <div class="container">
+      <div class="page-header">
+	<h1>Your results</h1>
+      </div>
+	<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12">
+	  <div class="shape" style="background-color:#29516E">
+	    <img class="legend" src="open-iconic-master/svg/thumb-up.svg"/>
+          </div>
+	  <div class="shape" style="background-color:#AC3939">
+	    <img class="legend" src="open-iconic-master/svg/thumb-down.svg" style="margin-top:20%;"/>
+          </div>
+	  <div class="shape" style="background-color:#AC9739">
+	    <img class="legend" src="open-iconic-master/svg/question-mark.svg" style="margin-left:-5%;"/>
+          <div>
+         </div>
+      </div>
+	<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12" id="map"></div>
+      </div>
+      </div>
+      <script>
+	$(document).on("click", ".panel-heading span.clickable", function(e) {
+	var $this = $(this); 
+	if(!$this.hasClass("panel-collapsed")) {
+	$this.parents(".panel").find(".panel-body").slideUp();
+	$this.addClass("panel-collapsed");
+	$this.find("i").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+	} else {
+	$this.parents(".panel").find(".panel-body").slideDown();
+	$this.removeClass("panel-collapsed");
+	$this.find("i").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+	}
+	});
+
+	$(document).on("click", ".panel div.clickable", function(e) {
+	if(!$this.hasClass("panel-collapsed")) {
+	$this.parents(".panel").find(".panel-body").slideUp();
+	$this.addClass("panel-collapsed");
+	$this.find("i").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+	} else {
+	$this.parents(".panel").find(".panel-body").slideDown();
+	$this.removeClass("panel-collapsed");
+	$this.find("i").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+	}
+	});
+
+	$(document).ready( function() {
+	$(".panel-heading span.clickable").click();
+	$(".panel .div.clickable").click();
+	});
+
+	var m_width = $("#map").width(),
+	width = 1810,
+	height = 600;
+	var ratio = width/height;
+	
+	var myworld;
+	var projection;
+	var svg, g, path;
+
+	setup();
+
+	var zoom = d3.behavior.zoom()
+              .on("zoom", move)
+             .scaleExtent([1, 8]);
+
+	function move() {
+	g.attr("transform", "translate("+d3.event.translate.join(",")+")scale("+d3.event.scale+")");
+	g.selectAll("path")
+           .attr("d", path.projection(projection));
+	}
+
+        var throttleTimer;
+        function throttle() {
+           window.clearTimeout(throttleTimer);
+	   throttleTimer = window.setTimeout(function() {
+              redraw()
+           }, 200);
+         }
+
+	function redraw() {
+                var old = m_width;
+	        m_width = $("#map").width();
+	        width = width*m_width/old;
+	        height = width/ratio;
+	        d3.select('svg').remove();
+	        drawMap(myworld);
+        } 
+
+	var ageByCountry = d3.map();
+	var attributeArray = [];
+	var currentAttribute=0;
+
+	function setup() {
+ 	     projection = d3.geo.equirectangular()
+                .scale(220)
+                .center([0, 40])
+                .translate([width/2., height/3.]);
+
+             path = d3.geo.path()
+	        .projection(projection);
+
+             d3.select(window).on("resize", throttle);
+           }	 
+
+        loadData();
+
+	function loadData()
+	{
+	   queue()
+            .defer(d3.json, "world-topo-min.json")
+            .defer(d3.csv, "HDI_Indicators_By_Country_2014.csv")
+	    .await(ready);
+	}
+
+	function ready(error, world, countryData) {
+	var countries = world.objects.countries.geometries;
+	for (var i in countries) {
+	       for (var j in countryData) {
+	           if (countries[i].properties.name == countryData[j].name)
+	              {
+                          for (var k in countryData[j]) {
+	                       if( k!= 'name') {
+                                   if (attributeArray.indexOf(k) == -1) {
+                                      attributeArray.push(k);         
+	                           }
+	                        countries[i].properties[k] = Number(countryData[j][k]);
+                               }
+                          }
+                    break;
+	          }
+	       }
+
+	}
+	   drawMap(world);
+	}
+
+
+	function drawMap(world)
+	{
+   	svg = d3.select("#map").append("svg")
+	   .attr("preserveAspectRatio", "xMidYMid")
+	   .attr("viewBox", "0 0 " + width + " " + height)
+	   .attr("width", m_width)
+	   .attr("height", m_width/3)
+           .call(zoom)
+	   .append("g");
+
+	g=svg.append("g");
+           
+	g.append("path")
+	    .attr("d", path);
+
+	myworld = world;
+	g.selectAll(".country")
+	   .data(topojson.feature(world, world.objects.countries).features)
+           .enter().append("path")
+           .attr("class", "country")
+	   .style("fill", function(d) {return getMyColor(d.properties);})
+           .attr("title", function(d) {return d.properties.name;})
+           .attr("id", function(d) { return "country"+d.id;})
+           .attr("d", path);
+	
+	svg.call(zoom);
+
+	}
+
+
+	var first = function() {
+                 d3.selectAll(".country").transition()
+                    .style("fill", function(d) {
+	            return getMyColor(d.properties);
+	        })
+       }
+	
+	var booleanResults = {age:0, school:0,mommy:0, disaster:0};
+	var positions = {age:0, school:1, mommy:2, disaster:3};
+	var pres = {age:1, school:1, mommy:1, disaster:1};
+	var scales = {age:1, school:1, mommy:1, disaster:1}
+	var slider, slider2, slider3, slider4;
+
+	function getMyColor(vals) {
+	   var slarray = {age:slider, school:slider2, mommy:slider3, disaster:slider4}
+           console.log("ageValue:");
+	   console.log(vals[attributeArray[0]]);
+	   console.log(typeof ageValue);
+	   console.log("sliderValue:");
+	   console.log(slider.slider('getValue'));
+	   for (var prop in slarray) {
+         	   if (pres[prop]*vals[attributeArray[positions[prop]]]*scales[prop] < pres[prop]*slarray[prop].slider('getValue')) booleanResults[prop] = 1;
+	           if (pres[prop]*vals[attributeArray[positions[prop]]]*scales[prop] >= pres[prop]*slarray[prop].slider('getValue')) booleanResults[prop] = 0;
+                   if (typeof vals[attributeArray[positions[prop]]] == 'undefined') booleanResults[prop] = -1;
+	  }
+           var color = '#29516E';
+           for (var prop in booleanResults) {
+	       console.log(prop);
+	       console.log(booleanResults[prop]);
+	       if(booleanResults.hasOwnProperty(prop)) {
+                      if(booleanResults[prop] == -1)  { color = '#AC9739'; break;}
+                      if(booleanResults[prop] == 1)  { color = '#AC3939'; break;}
+	              }
+                   }
+	  console.log(color);
+          return color;
+          }
+
+
+	d3.select("#map")
+	  .on("onload", function() {
+                        d3.selectAll(".country").transition()
+                          .style("fill", function(d) { return getMyColor(d.properties); } );
+                   });
+
+
+	slider = $("#ex1").slider({
+                    formatter: function(value){
+                         return 'Your choice: ' + value;
+                       },
+	            tooltip: 'always'
+                   })
+	           .on("slide", function() {
+                        d3.selectAll(".country").transition()
+                         .style("fill", function(d) { return getMyColor(d.properties); } );
+                   })
+	           .on("slideStop", function() {
+                        d3.selectAll(".country").transition()
+                         .style("fill", function(d) { return getMyColor(d.properties); } );
+                   });
+
+
+
+	slider2 = $("#dSchool").slider({
+                    formatter: function(value){
+                         return 'Your choice: ' + value;
+                       },
+	            tooltip: 'always'
+                   })
+	           .on("slide", function() {
+                        d3.selectAll(".country").transition()
+                         .style("fill", function(d) { return getMyColor(d.properties); } );
+                   })
+	           .on("slideStop", function() {
+                        d3.selectAll(".country").transition()
+                         .style("fill", function(d) { return getMyColor(d.properties); } );
+                   });
+
+
+	slider3 = $("#mommy").slider({
+                    formatter: function(value){
+                         return 'Your choice: ' + value;
+                       },
+	            tooltip: 'always',
+                   })
+	           .on("slide", function() {
+                        d3.selectAll(".country").transition()
+                         .style("fill", function(d) { return getMyColor(d.properties); } );
+                   })
+	           .on("slideStop", function() {
+                        d3.selectAll(".country").transition()
+                         .style("fill", function(d) { return getMyColor(d.properties); } );
+                   });
+
+
+	slider4 = $("#disaster").slider({
+                    formatter: function(value){
+                         return 'Your choice: ' + value;
+                       },
+	            tooltip: 'always',
+                   })
+	           .on("slide", function() {
+                        d3.selectAll(".country").transition()
+                         .style("fill", function(d) { return getMyColor(d.properties); } );
+                   })
+	           .on("slideStop", function() {
+                        d3.selectAll(".country").transition()
+                         .style("fill", function(d) { return getMyColor(d.properties); } );
+                   });
+      </script>
+
+
+      
+      <div class="container-fluid">
+      <div class="page-header">
+	<h1>Behind this webpage</h1>
+      </div>
+	<div class="row">
+          <div class="col-md-4 col-lg-4 col-sm-12">
+	    <div style="text-align:center;">
+	    <img class="icon" src="open-iconic-master/svg/bar-chart.svg"/>
+	    <h2>The data</h2>
+	    </div>
+	    <p>The data presented in this web page are from the United Nations Development Programme. They can be downloaded from <a href="https://data.undp.org/dataset/HDI-Indicators-By_Country-2014" target="_blank">this page</a>.</p>
+	  </div>
+	  <div class="clearfix visible-sm-block"></div>
+          <div class="col-md-4 col-lg-4 col-sm-12">
+	    <div style="text-align:center">
+	    <img class="icon" src = "open-iconic-master/svg/person.svg" alt="author icon"/>
+	    <h2>The author</h2>
+	    </div>
+	    <p>I am a physicist going data science and this is my first project with D3.js. Its goal is to demonstrate the power of data visualization in data science and journalism, and to draw attention to the huge differences in life standards across the globe.</p>
+	  </div>
+	  <div class="clearfix visible-sm-block"></div>
+          <div class="col-md-4 col-lg-4 col-sm-12">
+	    <div style="text-align:center">
+	    <img class="icon" src = "open-iconic-master/svg/wrench.svg" alt="tools icon"/>
+	    <h2>The tools</h2>
+	    </div>
+	    <p>This webpage was built with <a href="http://getbootstrap.com" target="_blank">twitter bootstrap 3.3.2</a>,<a href="http://seiyria.github.io.bootstrap-slider" target = "_blank">sliders for bootstrap</a>, <a href="http://d3js.org" target="_blank">D3.js</a> and <a herf="https:/useiconic.com/open/" target="_blank">openiconic icons</a>. It uses <a href="htttp://www.google.com/fonts" target="_blank">google fonts</a> and the colour palette was generated with <a href="http://www.paletton.com" target="_blank">paletton</a></p>.
+	  </div>
+	</div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+	<div class="col-xs-12">
+	  <footer>
+	    <p>&copy; Copyright 2015 Sirin Odrowski</p>
+	  </footer>
+	</div>
+      </div>
+    </div>
+    
+  </body>
+</html>

@@ -1,0 +1,90 @@
+p, div, h2, h3, h4 {
+    font-family: 'Arimo', Helvetica, Arial, sans-serif;
+}
+h1 {
+    font-family: 'Pacifico','Arimo', Helvetica, Arial, sans-serif;
+    color: #123954;
+    line-height: 1.5em;
+}
+.jumbotron {
+    background-color: #FFF;
+}
+a {
+    color: inherit;
+    text-decoration: underline;
+}
+.navbar-header {
+    background-color: #FFEFA9;    
+}
+#ex1Slider #dSchoolSlider .slider-selection #mommyslider #disasterslider{
+    margin-left: -15px;
+    margin-right: -15px;
+    width: 100%;
+}
+.legend {
+    text-align: center;
+    color: white;
+    width: 70%;
+    height: 70%;
+    position: relative;
+    margin-top: 15%;
+    margin-left: 5%;
+}
+#map {
+    margin-top: 15px;
+    background-color: #FFF;
+}    
+path {
+    stroke: #FFDAA9;
+    stroke-width: 0.25px;
+    fill: #F1F1F7;
+    opacity: 1;
+}    
+.shape {
+    display: inline-block;
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    text-align: center;
+}
+.icon {
+    width: 30px;
+    margin-top: 5px;
+    display: inline-block;
+}
+.panel-primary .panel-heading {
+    border: 0px;
+    background-image: linear-gradient(to bottom, #486E89 0px, #708FA4 100%);
+}
+.clickable {
+    cursor: pointer;
+}
+.clickable .glyphicon {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 5px;
+}
+.panel-heading span {
+    margin-top: -5px;
+}   
+a.clickable {
+    color: inherit;
+}
+a.clickable:hover {
+    text-decoration:none;
+}
+.slider-handle {
+    background: #042438;
+}
+.slider-track {
+    background-image: linear-gradient(to bottom, #29516E 0px, #486E89 100%);
+}
+.slider-selection {
+    background-image: linear-gradient(to bottom, #AB3939 0px, #D56969 100%);
+}
+.tooltip-inner {
+    background-color:#042438;
+}
+.tooltip-arrow {
+    color:#042438;
+}
